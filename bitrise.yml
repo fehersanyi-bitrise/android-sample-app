@@ -3,9 +3,21 @@ format_version: 1.1.0
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 app:
   envs:
+  - ANDROID_HOME: "/usr/local/share/android-sdk"
 workflows:
   primary:
     steps:
-    - install-missing-android-tools: {}
-    - android-lint: {}
-    - android-unit-test: {}
+    - install-missing-android-tools:
+        inputs:
+        - ndk_revision: '19'
+        - gradlew_path: "./gradlew"
+    - android-lint:
+        inputs:
+        - module: app
+        - variant: debug
+        - project_location: "./"
+    - android-unit-test:
+        inputs:
+        - module: app
+        - variant: debug
+        - project_location: "./"
